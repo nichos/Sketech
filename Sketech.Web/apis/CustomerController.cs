@@ -1,5 +1,6 @@
 ﻿using Sketech.Entities;
 using Sketech.Services;
+using Sketech.Web.ActionFilters;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -17,6 +18,7 @@ namespace Sketech.Web.apis
         }
 
         [HttpGet]
+        [AuditLog("GetCustomer", "test audit customer")]
         public async Task<IEnumerable<Customer>> GetCustomers()
         {
             var service = new CustomerService();

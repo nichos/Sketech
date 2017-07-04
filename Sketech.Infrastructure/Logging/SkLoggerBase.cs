@@ -1,32 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Sketech.Infrastructure.Logging
 {
     public abstract class SkLoggerBase
     {
-        protected abstract void LogSystemEvent(SkLogLevel logLevel, string message, string detail);
+        protected abstract Task LogSystemEventAsync(SkLogLevel logLevel, string message, string detail);
         
-        protected abstract void LogAuditEvent(string eventName, Dictionary<string, string> props);
+        protected abstract Task LogAuditEventAsync(string eventName, string detail, Dictionary<string, string> props);
 
         public void LogError(Exception ex)
         {
-            LogSystemEvent(SkLogLevel.Error, ex.Message, ex.ToString());
+            Task.Run(()=> LogSystemEventAsync(SkLogLevel.Error, ex.Message, ex.ToString())).Wait();
         }
 
         public void LogWarning(string message, string detail)
         {
-            LogSystemEvent(SkLogLevel.Warning, message, detail);
+            Task.Run(() => LogSystemEventAsync(SkLogLevel.Warning, message, detail)).Wait();
         }
 
         public void LogInfo(string message, string detail)
         {
-            LogSystemEvent(SkLogLevel.Info, message, detail);
+            Task.Run(() => LogSystemEventAsync(SkLogLevel.Info, message, detail)).Wait();
         }
 
-        public void LogAudit(string eventName, Dictionary<string, string> props)
+        public void LogAudit(string eventName, string detail, Dictionary<string, string> props)
         {
-            LogAuditEvent(eventName, props);
+            Task.Run(() => LogAuditEventAsync(eventName, detail, props)).Wait();
         }
     }
 }

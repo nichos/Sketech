@@ -66,7 +66,6 @@ namespace Sketech.Dals.Repositories
         protected async Task<IList<IEnumerable<object>>> ExecuteStoredProcedureAsync(string spName, IList<SqlParameter> parameters,
             IList<Func<SqlDataReader, Task<object>>> setters, int timeout = -1)
         {
-            var resultSet = 0;
             try
             {
                 timeout = timeout < -1 ? Session.SqlCommandTimeout : timeout;
