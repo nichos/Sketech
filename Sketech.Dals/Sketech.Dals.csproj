@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataAccessResult.cs" />
+    <Compile Include="Extensions\SqlDataReaderExtension.cs" />
     <Compile Include="Helper\AdoHelper.cs" />
     <Compile Include="Logging\SkDbLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -50,6 +52,10 @@
     <Compile Include="SkRepositorySession.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Sketech.Entities\Sketech.Entities.csproj">
+      <Project>{315B7E6A-AF17-4A2F-94B0-880039AE0216}</Project>
+      <Name>Sketech.Entities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Sketech.Infrastructure\Sketech.Infrastructure.csproj">
       <Project>{f729bef7-f7dd-475e-864a-723f88d2e740}</Project>
       <Name>Sketech.Infrastructure</Name>

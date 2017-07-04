@@ -1,8 +1,7 @@
-﻿using System;
+﻿using Sketech.Entities;
+using Sketech.Services;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace Sketech.Web.apis
@@ -15,6 +14,13 @@ namespace Sketech.Web.apis
         {
             var curUser = User.Identity.Name;
             return curUser;
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<Customer>> GetCustomers()
+        {
+            var service = new CustomerService();
+            return await service.GetCustomers();
         }
     }
 }
