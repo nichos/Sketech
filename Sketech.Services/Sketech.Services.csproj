@@ -40,7 +40,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomerService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceBase.cs" />
+    <Compile Include="SkCoreServices.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Sketech.Dals\Sketech.Dals.csproj">
+      <Project>{D598EE9C-9A7E-4979-B88B-5866A1F212F3}</Project>
+      <Name>Sketech.Dals</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sketech.Infrastructure\Sketech.Infrastructure.csproj">
+      <Project>{F729BEF7-F7DD-475E-864A-723F88D2E740}</Project>
+      <Name>Sketech.Infrastructure</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

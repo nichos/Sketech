@@ -21,7 +21,7 @@ namespace Sketech.Infrastructure.ExceptionHandlering
                 var logger = SkServiceLocator.Get<SkLoggerBase>();
                 if (logger != null)
                 {
-                    logger.LogException(ex);
+                    logger.LogError(ex);
                 }
             }
 

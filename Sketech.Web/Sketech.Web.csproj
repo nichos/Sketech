@@ -128,6 +128,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="apis\CustomerController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -204,6 +205,24 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Sketech.Dals\Sketech.Dals.csproj">
+      <Project>{d598ee9c-9a7e-4979-b88b-5866a1f212f3}</Project>
+      <Name>Sketech.Dals</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sketech.Entities\Sketech.Entities.csproj">
+      <Project>{315b7e6a-af17-4a2f-94b0-880039ae0216}</Project>
+      <Name>Sketech.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sketech.Infrastructure\Sketech.Infrastructure.csproj">
+      <Project>{f729bef7-f7dd-475e-864a-723f88d2e740}</Project>
+      <Name>Sketech.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sketech.Services\Sketech.Services.csproj">
+      <Project>{ce109c06-2e36-4f30-a9b6-97aa9b91fd6b}</Project>
+      <Name>Sketech.Services</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

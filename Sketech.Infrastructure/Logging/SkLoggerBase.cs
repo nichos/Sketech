@@ -9,7 +9,7 @@ namespace Sketech.Infrastructure.Logging
         
         protected abstract void LogAuditEvent(string eventName, Dictionary<string, string> props);
 
-        public void LogException(Exception ex)
+        public void LogError(Exception ex)
         {
             LogSystemEvent(SkLogLevel.Error, ex.Message, ex.ToString());
         }

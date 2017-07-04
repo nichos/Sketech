@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Sketech.Dals.Library
+namespace Sketech.Dals.Helper
 {
     public class AdoHelper
     {
