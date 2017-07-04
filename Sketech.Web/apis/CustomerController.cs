@@ -20,7 +20,9 @@ namespace Sketech.Web.apis
         public async Task<IEnumerable<Customer>> GetCustomers()
         {
             var service = new CustomerService();
-            return await service.GetCustomers();
+            var response = await service.GetCustomers();
+
+            return response.Value;
         }
     }
 }

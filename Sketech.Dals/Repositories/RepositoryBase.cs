@@ -1,7 +1,7 @@
 ﻿using Sketech.Dals.Helper;
+using Sketech.Infrastructure.ExceptionHandlering;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
@@ -115,5 +115,43 @@ namespace Sketech.Dals.Repositories
             }
         }
         #endregion
+
+        protected DataAccessResult<T> ExecuteAdataAccess<T>(Func<DataAccessResult<T>, T> func, T defaultValue = default(T))
+        {
+            var response = new DataAccessResult<T>();
+            var result = defaultValue;
+            try
+            {
+                result = func(response);
+                response.Value = result;
+            }
+            catch(Exception ex)
+            {
+                response.Error = ex;
+                response.Value = defaultValue;
+                SkExceptionHandler.HandleDataAccessException(ex);
+            }
+
+            return response;
+        }
+
+        protected async Task<DataAccessResult<T>> ExecuteAdataAccessAsync<T>(Func<DataAccessResult<T>, Task<T>> func, T defaultValue = default(T))
+        {
+            var response = new DataAccessResult<T>();
+            var result = defaultValue;
+            try
+            {
+                result = await func(response);
+                response.Value = result;
+            }
+            catch (Exception ex)
+            {
+                response.Error = ex;
+                response.Value = defaultValue;
+                SkExceptionHandler.HandleDataAccessException(ex);
+            }
+
+            return response;
+        }
     }
 }

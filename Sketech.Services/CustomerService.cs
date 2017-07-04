@@ -8,15 +8,18 @@ namespace Sketech.Services
 {
     public class CustomerService : ServiceBase
     {
-        public async Task<IEnumerable<Customer>> GetCustomers()
+        public async Task<ServiceResponse<IEnumerable<Customer>>> GetCustomers()
         {
-            using(var session = GetRepositorySession())
+            return await ExecuteServiceAsync<IEnumerable<Customer>>(async response =>
             {
-                var repo = new CustomerRepository(session);
-                var data = await repo.GetCustomers();
+                using (var session = GetRepositorySession())
+                {
+                    var repo = new CustomerRepository(session);
+                    var data = await repo.GetCustomers();
 
-                return data.Value;
-            }
+                    return data.Value;
+                }
+            });
         }
     }
 }

@@ -43,6 +43,7 @@
     <Compile Include="CustomerService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceBase.cs" />
+    <Compile Include="ServiceResponse.cs" />
     <Compile Include="SkCoreServices.cs" />
   </ItemGroup>
   <ItemGroup>

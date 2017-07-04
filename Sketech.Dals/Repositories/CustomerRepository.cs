@@ -28,19 +28,16 @@ namespace Sketech.Dals.Repositories
 
         public async Task<DataAccessResult<IEnumerable<Customer>>> GetCustomers()
         {
-            var query = new StringBuilder();
-            query.Append(@"SELECT CustomerId, Firstname, Lastname FROM dbo.vwCustomer");
-            query.Append(" ORDER BY Firstname, LastName");
+            return await ExecuteAdataAccessAsync<IEnumerable<Customer>>(async response =>
+           {
+               var query = new StringBuilder();
+               query.Append(@"SELECT CustomerId, Firstname, Lastname FROM dbo.vwCustomer");
+               query.Append(" ORDER BY Firstname, LastName");
 
-            var response = await SelectDbViewAsync(query.ToString(), ConvertToCustomer);
-            var data = response.ToList();
-            var result = new DataAccessResult<IEnumerable<Customer>>
-            {
-                Value = data.ToList(),
-                TotalResultCount = data.Count
-            };
-
-            return result;
+               var returnData = await SelectDbViewAsync(query.ToString(), ConvertToCustomer);
+               return returnData.ToList();
+           });
+            
         }
     }
 }
