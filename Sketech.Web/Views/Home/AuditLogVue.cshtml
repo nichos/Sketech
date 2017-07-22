@@ -4,3 +4,16 @@
 }
 
 <h2>AuditLog with VueJs</h2>
+<div id="app">
+    <ol>
+        <li v-for="log in logs">
+            {{ log.Timestamp }}
+            {{ log.EventName }}
+            {{ log.ActionUser }}
+            {{ log.EventDetail }}
+        </li>
+    </ol>
+</div>
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/vue/2.4.0/vue.min.js" type="text/javascript"></script>
+<script src="~/Scripts/Views/Home/AuditLogVue.js" type="text/javascript" ></script>
