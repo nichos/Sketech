@@ -7,6 +7,10 @@ using System.Threading;
 using Sketech.Infrastructure.Configurations;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Sketech.Entities.Logging;
+using System.Collections;
+using System.Linq;
+using Sketech.Dals.Extensions;
 
 namespace Sketech.Dals.Logging
 {
@@ -20,6 +24,8 @@ namespace Sketech.Dals.Logging
             var conn = new SqlConnection(connStr);
             return conn;
         }
+
+        #region Audit Log
 
         protected override async Task LogAuditEventAsync(string eventName, string detail, Dictionary<string, string> props)
         {
@@ -40,14 +46,62 @@ namespace Sketech.Dals.Logging
                     AdoHelper.CreateSqlParameter<string>("@ActionUser", user)
                 };
 
-                var conn = GetLoggingConnection();
-                await AdoHelper.ExecuteStoredProcedureAsync(conn, "dbo.uspWriteAuditLog", parms);
+                using (var conn = GetLoggingConnection())
+                {
+                    await AdoHelper.ExecuteStoredProcedureAsync(conn, "dbo.uspWriteAuditLog", parms);
+                }
             }
             catch
             {
 
             }
         }
+
+        private async Task<object> ConvertToAuditLogEntry(SqlDataReader data)
+        {
+            return new AuditLogEntry
+            {
+                Id = await data.GetValueAsync<Guid>("Id"),
+                EventDetail = await data.GetValueAsync<string>("EventDetail"),
+                EventName = await data.GetValueAsync<string>("EventName"),
+                ActionUser = await data.GetValueAsync<string>("ActionUser"),
+                Timestamp = await data.GetValueAsync<DateTime>("Timestamp")
+            };
+        }
+
+        public async Task<IList<AuditLogEntry>> GetAuditLogs(int skip = 0, int take = 100)
+        {
+            try
+            {
+                var user = Thread.CurrentPrincipal.Identity.Name;
+
+                var parms = new List<SqlParameter>
+                {
+                    AdoHelper.CreateSqlParameter("@Skip", skip),
+                    AdoHelper.CreateSqlParameter("@Take", take),
+                };
+
+                var converters = new List<Func<SqlDataReader, Task<object>>> { ConvertToAuditLogEntry };
+
+                using (var conn = GetLoggingConnection())
+                {
+                    var data = await AdoHelper.ExecuteStoredProcedureAsync(conn, "dbo.uspGetAuditLog", parms, converters);
+                    var entries = data[0].Cast<AuditLogEntry>().ToList();
+
+                    return entries;
+                }
+            }
+            catch
+            {
+
+            }
+
+            return null;
+        }
+
+        #endregion
+
+        #region System Log
 
         protected override async Task LogSystemEventAsync(SkLogLevel logLevel, string message, string detail)
         {
@@ -62,13 +116,17 @@ namespace Sketech.Dals.Logging
                     AdoHelper.CreateSqlParameter<string>("@ActionUser", user)
                 };
 
-                var conn = GetLoggingConnection();
-                await AdoHelper.ExecuteStoredProcedureAsync(conn, "dbo.uspWriteSystemLog", parms);
+                using (var conn = GetLoggingConnection())
+                {
+                    await AdoHelper.ExecuteStoredProcedureAsync(conn, "dbo.uspWriteSystemLog", parms);
+                }
             }
             catch
             {
 
             }
         }
+
+        #endregion
     }
 }

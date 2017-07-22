@@ -46,6 +46,9 @@
   <ItemGroup>
     <Compile Include="Customer.cs" />
     <Compile Include="EntityBase.cs" />
+    <Compile Include="Identity\UserInfo.cs" />
+    <Compile Include="Identity\UsersInRoles.cs" />
+    <Compile Include="Logging\AuditLogEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

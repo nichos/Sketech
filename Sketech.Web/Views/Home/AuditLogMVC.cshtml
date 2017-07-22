@@ -1,0 +1,12 @@
+﻿@using Sketech.Entities.Logging;
+@{
+    ViewBag.Title = "AuditLogMVC";
+}
+@model IList<AuditLogEntry>
+
+<h2>AuditLog with MVC</h2>
+@foreach (var entry in Model)
+{
+    <div> @entry.Timestamp @entry.EventName @entry.ActionUser @(entry.EventDetail ?? string.Empty)</div>
+}
+

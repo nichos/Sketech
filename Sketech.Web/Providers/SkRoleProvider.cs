@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Sketech.Services;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Security;
 
 namespace Sketech.Web.Providers
@@ -9,7 +12,7 @@ namespace Sketech.Web.Providers
         {
             get
             {
-                return "SkInfra";
+                return "SkProtoType";
             }
 
             set
@@ -35,27 +38,60 @@ namespace Sketech.Web.Providers
 
         public override string[] FindUsersInRole(string roleName, string usernameToMatch)
         {
-            throw new NotImplementedException();
+            var users = GetUsersInRole(roleName);
+            return users.Where(o => o.StartsWith(usernameToMatch)).ToArray();
         }
 
         public override string[] GetAllRoles()
         {
-            throw new NotImplementedException();
+            var service = new IdentityService();
+            var result = new string[] { };
+            Task.Run(async () =>
+            {
+                var roles = await service.GetRoles(this.ApplicationName);
+                result = roles.Value.ToArray();
+            }).Wait();
+
+            return result;
         }
 
         public override string[] GetRolesForUser(string username)
         {
-            throw new NotImplementedException();
+            var service = new IdentityService();
+            var result = new string[] { };
+            Task.Run(async () =>
+            {
+                var roles = await service.GetUsersInRoles(this.ApplicationName, username, null);
+                result = roles.Value.Select(o => o.Role).ToArray();
+            }).Wait();
+
+            return result;
         }
 
         public override string[] GetUsersInRole(string roleName)
         {
-            throw new NotImplementedException();
+            var service = new IdentityService();
+            var result = new string[] { };
+            Task.Run(async () =>
+            {
+                var roles = await service.GetUsersInRoles(this.ApplicationName, null, roleName);
+                result = roles.Value.Select(o => o.Username).ToArray();
+            }).Wait();
+
+            return result;
         }
 
         public override bool IsUserInRole(string username, string roleName)
         {
-            throw new NotImplementedException();
+            var service = new IdentityService();
+            var result = false;
+            Task.Run(async () =>
+            {
+                var roles = await service.GetUsersInRoles(this.ApplicationName, username, roleName);
+                result = roles.TotalResultCount > 0;
+            }).Wait();
+
+            return result;
         }
 
         public override void RemoveUsersFromRoles(string[] usernames, string[] roleNames)
@@ -65,7 +101,8 @@ namespace Sketech.Web.Providers
 
         public override bool RoleExists(string roleName)
         {
-            throw new NotImplementedException();
+            var roles = GetAllRoles();
+            return roles != null && roles.Contains(roleName);
         }
     }
 }

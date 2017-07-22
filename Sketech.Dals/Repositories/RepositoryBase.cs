@@ -77,8 +77,7 @@ namespace Sketech.Dals.Repositories
                 }
 
                 var enumerable =
-                    setters as Func<SqlDataReader, Task<object>>[] ??
-                    setters.ToArray();
+                    setters as Func<SqlDataReader, Task<object>>[];
                 if (!enumerable.Any())
                 {
                     await ExecuteStoredProcedureAsync(spName, parameters);
